@@ -52,9 +52,10 @@ export default function WasmRunner(props) {
       console.debug("Running output.js");
       setStat("run");
       try {
-        new Function(js)();
+        let ex = (new Function(js))();
         console.log("ran javascript file");
 
+        console.log(wasm_bindgen)
         console.log("SUCCESSFULLY RAN LIB MAIN")
       } catch (e) {
         console.log("ERROR RUNNING WASM: ", e);
