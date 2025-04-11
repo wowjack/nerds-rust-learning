@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+var wasm_bindgen;
 const COMPILE_API_ENDPOINT = "../api/compile";
 
 export default function WasmRunner(props) {
