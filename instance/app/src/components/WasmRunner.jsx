@@ -31,13 +31,12 @@ export default function WasmRunner(props) {
     const compiler_out = result["compiler_output"];
     const taskno = result["taskno"];
     // js is the javascript code for loading the wasm
-    var js = result["js"];
+    const js = result["js"];
     setLastTime((new Date() - compile_time)/1000);
 
     print("*** Compiler Output ***");
     print(compiler_out);
-    console.log(compiler_out);
-    return
+
     
     let module = {
       print: print,
@@ -50,14 +49,11 @@ export default function WasmRunner(props) {
 
     if (result !== "error") {
       print("*** Program Output ***");
+      console.debug("Running output.js");
       setStat("run");
       try {
-        // remove the last two lines
-        const lines = js.trim().split('\n');
-        console.log("LINES: ", lines)
-        js = js.trim().split('\n').slice(0, -3).join('\n').replace(/\bexport\b/g, '') + "\n__wbg_init();\nlibrary_main();";
-        console.log("Javascript exec string: ", js);
-        const mod = new Function(js)
+        new Function(js)();
+        console.log("ran javascript file");
 
         mod();
         console.log("SUCCESSFULLY RAN LIB MAIN")
