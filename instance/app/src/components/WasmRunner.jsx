@@ -55,7 +55,6 @@ export default function WasmRunner(props) {
         new Function(js)();
         console.log("ran javascript file");
 
-        mod();
         console.log("SUCCESSFULLY RAN LIB MAIN")
       } catch (e) {
         console.log("ERROR RUNNING WASM: ", e);
