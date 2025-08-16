@@ -32,7 +32,7 @@ def check_session_valid(userid):
     if not row:
         return False, 0  # no such user/session
 
-    (session_start,) = row
+    session_start = row
     now = datetime.now(timezone.utc)
     elapsed = now - session_start
     if elapsed > TIME_LIMIT:
@@ -297,14 +297,11 @@ def get_uptime():
     Get the uptime of instance container since it was assigned
     Since the instance server is only created when the participant begins, this allows tracking how long the participant has been working. 
     '''
-    try:
-        with open(CONFIG.USER_DATA_FILE) as data_file:
-            user_id = user_data["user_id"]
-            #token = user_data["token"]
-            (_, seconds) = check_session_valid(user_id)
-            return jsonify({"uptime": seconds})
-    except Exception:
-        return jsonify({"uptime": -1})
+    with open(CONFIG.USER_DATA_FILE) as data_file:
+        user_id = user_data["user_id"]
+        #token = user_data["token"]
+        (_, seconds) = check_session_valid(user_id)
+        return jsonify({"uptime": seconds})
 
 
 @app.errorhandler(404)
