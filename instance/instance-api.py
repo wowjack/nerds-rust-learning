@@ -298,6 +298,8 @@ def get_uptime():
     Since the instance server is only created when the participant begins, this allows tracking how long the participant has been working. 
     '''
     with open(CONFIG.USER_DATA_FILE) as data_file:
+        user_data = json.load(data_file)
+        print(user_data)
         user_id = user_data["user_id"]
         #token = user_data["token"]
         (_, seconds) = check_session_valid(user_id)
