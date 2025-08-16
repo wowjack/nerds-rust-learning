@@ -57,7 +57,7 @@ def enforce_time_limit():
 
     valid, _ = check_session_valid(user_id)
     if not valid:
-        return redirect(url_for("survey"))
+        return redirect(url_for("forward_to_survey"))
 
 
 def send_recv_data(data: dict, endpoint:str="/submit") -> bytes:
