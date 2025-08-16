@@ -280,14 +280,14 @@ def check_session_valid(userid):
     conn.close()
 
     if not row:
-        return False, -1  # no such user/session
+        return False, 100000  # no such user/session
 
     (session_start,) = row
 
     now = datetime.now(timezone.utc)
     elapsed = now - session_start
     if elapsed > TIME_LIMIT:
-        return False, 0
+        return False, 101
     else:
         remaining = int((TIME_LIMIT - elapsed).total_seconds())
         return True, remaining
