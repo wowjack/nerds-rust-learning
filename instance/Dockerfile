@@ -15,7 +15,7 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install -yqq \
     python3 \
     python3-dev \
     python3-flask \
-    python3-psycopg2-binary \
+    python3-psycopg2 \
     pulseaudio \
     tigervnc-standalone-server \
     matchbox-window-manager \
