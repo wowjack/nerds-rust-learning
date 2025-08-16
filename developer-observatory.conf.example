@@ -31,7 +31,7 @@ poolSize="5"
 
 # How long should study instances be kept?
 # See control container filter for deciding if it should be idle time or assigned time.
-instanceIdleTime="2 hours"
+instanceIdleTime="4 hours"
 
 
 ## INSTANCE SERVER CONFIGURATION ##

@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS "createdInstances" (
     ip text NOT NULL,
     origin integer,
     time timestamp without time zone,
+    session_start TIMESTAMPTZ,
     ec2instance text,
     category integer,
     condition integer,

@@ -2,16 +2,61 @@ import os.path
 import logging
 import os
 import json
+import psycopg2
 import urllib.request as url_request
 from flask import Flask, request, redirect, make_response, abort, jsonify
 from subprocess import run, PIPE, STDOUT, CalledProcessError
 from shutil import copyfile, copy2
-import time
+from datetime import datetime, timezone, timedelta
 
 import config as CONFIG
 from firefox import get_firefox_history
 
+TIME_LIMIT = timedelta(hours=2)
+
 app = Flask(__name__)
+
+# Check the createdInstances table to make sure the time limit isn't up
+def check_session_valid(userid):
+    conn = psycopg2.connect(CONFIG.DB_CONFIG)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT session_start
+        FROM "createdInstances"
+        WHERE userid = %s;
+    """, (userid,))
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if not row:
+        return False, 0  # no such user/session
+
+    (session_start,) = row
+    now = datetime.now(timezone.utc)
+    elapsed = now - session_start
+    if elapsed > TIME_LIMIT:
+        return False, 0
+    else:
+        remaining = int((TIME_LIMIT - elapsed).total_seconds())
+        return True, remaining
+
+
+@app.before_request
+def enforce_time_limit():
+    if request.endpoint == "time_remaining":
+        return  # don't block the timer API itself
+
+    with open(CONFIG.USER_DATA_FILE) as data_file:
+        user_id = user_data["user_id"]
+    
+    if not userid:
+        return "Missing userid", 400
+
+    valid, _ = check_session_valid(user_id)
+    if not valid:
+        return redirect("/survey")
+
 
 def send_recv_data(data: dict, endpoint:str="/submit") -> bytes:
     """Send and receive data with authorization information"""
@@ -253,8 +298,14 @@ def get_uptime():
     Get the uptime of the flask backend.
     Since the instance server is only created when the participant begins, this allows tracking how long the participant has been working. 
     '''
-    seconds = int(time.time() - start_time)
-    return jsonify({"uptime": seconds})
+    try:
+        with open(CONFIG.USER_DATA_FILE) as data_file:
+            user_id = user_data["user_id"]
+            #token = user_data["token"]
+            (_, seconds) = check_session_valid(user_id)
+            return jsonify({"uptime": seconds})
+    except Exception:
+        return jsonify({"uptime": -1})
 
 
 @app.errorhandler(404)
