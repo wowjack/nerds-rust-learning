@@ -45,8 +45,12 @@ def check_session_valid(userid):
 
 @app.before_request
 def enforce_time_limit():
-    with open(CONFIG.USER_DATA_FILE) as data_file:
-        user_id = user_data["user_id"]
+    
+    try:
+        with open(CONFIG.USER_DATA_FILE) as data_file:
+            user_id = user_data["user_id"]
+    except:
+        user_id = request.args.get("userId")
     
     if not userid:
         return "Missing userid", 400
