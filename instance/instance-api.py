@@ -52,7 +52,7 @@ def enforce_time_limit():
     except:
         user_id = request.args.get("userId")
     
-    if not userid:
+    if not user_id:
         return "Missing userid", 400
 
     valid, _ = check_session_valid(user_id)
