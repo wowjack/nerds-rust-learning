@@ -57,7 +57,14 @@ def enforce_time_limit():
 
     valid, _ = check_session_valid(user_id)
     if not valid:
-        return redirect(f"{request.script_root}/survey")
+        try:
+            with open(CONFIG.USER_DATA_FILE) as data_file:
+                user_data = json.load(data_file)
+                user_id = user_data["user_id"]
+                token = user_data["token"]
+                return redirect("/survey/"+user_id+"/"+token)
+        except Exception:
+            return "strange error", 505
 
 
 def send_recv_data(data: dict, endpoint:str="/submit") -> bytes:
