@@ -45,11 +45,11 @@ def check_session_valid(userid):
 
 @app.before_request
 def enforce_time_limit():
-    
-    try:
+    if os.path.isfile(CONFIG.USER_DATA_FILE):
         with open(CONFIG.USER_DATA_FILE) as data_file:
+            user_data = json.load(data_file)
             user_id = user_data["user_id"]
-    except:
+    else:
         user_id = request.args.get("userId")
     
     if not user_id:
