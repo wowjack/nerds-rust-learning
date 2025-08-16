@@ -42,7 +42,7 @@ def check_session_valid(userid):
         return True, remaining
 
 
-@app.before_request
+#@app.before_request
 def enforce_time_limit():
     if request.endpoint == "time_remaining":
         return  # don't block the timer API itself
@@ -291,11 +291,10 @@ def forward_to_survey():
         pass
 
 
-start_time = time.time()
 @app.route("/api/uptime", methods=['GET'])
 def get_uptime():
     '''
-    Get the uptime of the flask backend.
+    Get the uptime of instance container since it was assigned
     Since the instance server is only created when the participant begins, this allows tracking how long the participant has been working. 
     '''
     try:
