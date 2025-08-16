@@ -3,9 +3,10 @@ import logging
 import os
 import json
 import urllib.request as url_request
-from flask import Flask, request, redirect, make_response, abort
+from flask import Flask, request, redirect, make_response, abort, jsonify
 from subprocess import run, PIPE, STDOUT, CalledProcessError
 from shutil import copyfile, copy2
+import time
 
 import config as CONFIG
 from firefox import get_firefox_history
