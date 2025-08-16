@@ -32,7 +32,9 @@ def check_session_valid(userid):
     if not row:
         return False, 0  # no such user/session
 
-    session_start = row
+    (session_start) = row
+    logging.debug(f"GOT SESSION START: {session_start}", level=logging.DEBUG)
+
     now = datetime.now(timezone.utc)
     elapsed = now - session_start
     if elapsed > TIME_LIMIT:
@@ -299,7 +301,6 @@ def get_uptime():
     '''
     with open(CONFIG.USER_DATA_FILE) as data_file:
         user_data = json.load(data_file)
-        print(user_data)
         user_id = user_data["user_id"]
         #token = user_data["token"]
         (_, seconds) = check_session_valid(user_id)
