@@ -30,10 +30,9 @@ def check_session_valid(userid):
     conn.close()
 
     if not row:
-        return False, 0  # no such user/session
+        return False, -1  # no such user/session
 
-    (session_start) = row
-    logging.debug(f"GOT SESSION START: {session_start}", level=logging.DEBUG)
+    (session_start,) = row
 
     now = datetime.now(timezone.utc)
     elapsed = now - session_start
