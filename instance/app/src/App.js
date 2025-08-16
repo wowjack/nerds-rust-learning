@@ -12,6 +12,7 @@ import useSavedState from "./hooks/useSavedState";
 import useTaskState from "./hooks/useTaskState";
 import {submit, compile} from "./services";
 import ReferenceView from './views/ReferenceView';
+import UptimeTimer from './components/UptimeTimer';
 
 const DEFAULT_TASK_LIST = [
   {
@@ -208,6 +209,7 @@ function App() {
           submit={submit_code}
         />
         <div className="views-container">
+          <UptimeTimer />
           <div className="navBar">
             <TabNav tab={tab} setTab={setTab}/>
             <div className="statusBar">

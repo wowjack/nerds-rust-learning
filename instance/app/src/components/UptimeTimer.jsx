@@ -1,0 +1,30 @@
+import { useEffect, useState } from "react";
+import { fetch_uptime } from "../services";
+
+export default function UptimeTimer() {
+  const [uptime, setUptime] = useState(0);
+
+  useEffect(() => {
+    const get_uptime = async () => {
+      setUptime(await fetch_uptime());
+    };
+
+    get_uptime(); // fetch immediately
+    const interval = setInterval(get_uptime, 1000); // refresh every 1s
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h}h ${m}m ${s}s`;
+  };
+
+  return (
+    <div>
+      <p>Backend uptime: {formatTime(uptime)}</p>
+    </div>
+  );
+}

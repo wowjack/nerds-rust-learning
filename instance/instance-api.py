@@ -245,6 +245,17 @@ def forward_to_survey():
         pass
 
 
+start_time = time.time()
+@app.route("/uptime", methods=['GET'])
+def get_uptime():
+    '''
+    Get the uptime of the flask backend.
+    Since the instance server is only created when the participant begins, this allows tracking how long the participant has been working. 
+    '''
+    seconds = int(time.time() - start_time)
+    return jsonify({"uptime": seconds})
+
+
 @app.errorhandler(404)
 def not_found(error):
     return 'Error: not found', 404

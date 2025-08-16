@@ -119,5 +119,17 @@ function set_resolution(width, height) {
   });
 }
 
+/// Returns backend uptime in seconds
+async function fetch_uptime() {
+  if (BACKEND_PRESENT) {
+    const res = await fetch(`${API_BASE_PATH}/uptime`, {method: "GET"});
+    const data = await res.json();
+    return data.uptime;
+  } else {
+    console.error("Cannot fetch uptime");
+    return 0
+  }
+}
 
-export {submit, get_tasks, set_resolution, compile}
+
+export {submit, get_tasks, set_resolution, compile, fetch_uptime}
