@@ -247,7 +247,7 @@ def forward_to_survey():
 
 
 start_time = time.time()
-@app.route("/uptime", methods=['GET'])
+@app.route("/api/uptime", methods=['GET'])
 def get_uptime():
     '''
     Get the uptime of the flask backend.
