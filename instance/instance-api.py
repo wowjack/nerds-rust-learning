@@ -12,7 +12,7 @@ from datetime import datetime, timezone, timedelta
 import config as CONFIG
 from firefox import get_firefox_history
 
-TIME_LIMIT = timedelta(hours=2)
+TIME_LIMIT = timedelta(minutes=1)
 
 app = Flask(__name__)
 
@@ -43,11 +43,8 @@ def check_session_valid(userid):
         return True, remaining
 
 
-#@app.before_request
+@app.before_request
 def enforce_time_limit():
-    if request.endpoint == "time_remaining":
-        return  # don't block the timer API itself
-
     with open(CONFIG.USER_DATA_FILE) as data_file:
         user_id = user_data["user_id"]
     
