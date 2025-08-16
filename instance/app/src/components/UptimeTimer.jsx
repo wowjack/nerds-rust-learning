@@ -15,6 +15,12 @@ export default function UptimeTimer() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (uptime <= 0) {
+        window.location.href = "../survey";
+    }
+  }, [uptime])
+
   const formatTime = (seconds) => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);

@@ -16,55 +16,8 @@ TIME_LIMIT = timedelta(minutes=1)
 
 app = Flask(__name__)
 
-# Check the createdInstances table to make sure the time limit isn't up
-def check_session_valid(userid):
-    conn = psycopg2.connect(**CONFIG.DB_CONFIG)
-    cur = conn.cursor()
-    cur.execute("""
-        SELECT session_start
-        FROM "createdInstances"
-        WHERE userid = %s;
-    """, (userid,))
-    row = cur.fetchone()
-    cur.close()
-    conn.close()
-
-    if not row:
-        return False, -1  # no such user/session
-
-    (session_start,) = row
-
-    now = datetime.now(timezone.utc)
-    elapsed = now - session_start
-    if elapsed > TIME_LIMIT:
-        return False, 0
-    else:
-        remaining = int((TIME_LIMIT - elapsed).total_seconds())
-        return True, remaining
 
 
-@app.before_request
-def enforce_time_limit():
-    if os.path.isfile(CONFIG.USER_DATA_FILE):
-        with open(CONFIG.USER_DATA_FILE) as data_file:
-            user_data = json.load(data_file)
-            user_id = user_data["user_id"]
-    else:
-        user_id = request.args.get("userId")
-    
-    if not user_id:
-        return "Missing userid", 400
-
-    valid, _ = check_session_valid(user_id)
-    if not valid:
-        try:
-            with open(CONFIG.USER_DATA_FILE) as data_file:
-                user_data = json.load(data_file)
-                user_id = user_data["user_id"]
-                token = user_data["token"]
-                return redirect("/survey/"+user_id+"/"+token)
-        except Exception:
-            return "strange error", 505
 
 
 def send_recv_data(data: dict, endpoint:str="/submit") -> bytes:
@@ -312,6 +265,32 @@ def get_uptime():
         #token = user_data["token"]
         (_, seconds) = check_session_valid(user_id)
         return jsonify({"uptime": seconds})
+
+# Check the createdInstances table to make sure the time limit isn't up
+def check_session_valid(userid):
+    conn = psycopg2.connect(**CONFIG.DB_CONFIG)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT session_start
+        FROM "createdInstances"
+        WHERE userid = %s;
+    """, (userid,))
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if not row:
+        return False, -1  # no such user/session
+
+    (session_start,) = row
+
+    now = datetime.now(timezone.utc)
+    elapsed = now - session_start
+    if elapsed > TIME_LIMIT:
+        return False, 0
+    else:
+        remaining = int((TIME_LIMIT - elapsed).total_seconds())
+        return True, remaining
 
 
 @app.errorhandler(404)
