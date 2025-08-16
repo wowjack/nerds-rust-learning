@@ -4,7 +4,7 @@ import os
 import json
 import psycopg2
 import urllib.request as url_request
-from flask import Flask, request, redirect, make_response, abort, jsonify
+from flask import Flask, request, redirect, make_response, abort, jsonify, url_for
 from subprocess import run, PIPE, STDOUT, CalledProcessError
 from shutil import copyfile, copy2
 from datetime import datetime, timezone, timedelta
@@ -57,7 +57,7 @@ def enforce_time_limit():
 
     valid, _ = check_session_valid(user_id)
     if not valid:
-        return redirect("/survey")
+        return redirect(url_for("survey"))
 
 
 def send_recv_data(data: dict, endpoint:str="/submit") -> bytes:
