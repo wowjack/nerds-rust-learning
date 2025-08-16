@@ -10,5 +10,5 @@ DB_CONFIG = {
     "host": "db",
     "dbname": "notebook",
     "user": "read_only_user",
-    "password": "%pwUser3"
+    "password": "%pwUser3%"
 }

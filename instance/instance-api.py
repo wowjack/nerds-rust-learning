@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 # Check the createdInstances table to make sure the time limit isn't up
 def check_session_valid(userid):
-    conn = psycopg2.connect(CONFIG.DB_CONFIG)
+    conn = psycopg2.connect(**CONFIG.DB_CONFIG)
     cur = conn.cursor()
     cur.execute("""
         SELECT session_start
