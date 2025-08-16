@@ -57,7 +57,7 @@ def enforce_time_limit():
 
     valid, _ = check_session_valid(user_id)
     if not valid:
-        return redirect(url_for("forward_to_survey"))
+        return redirect(f"{request.script_root}/survey")
 
 
 def send_recv_data(data: dict, endpoint:str="/submit") -> bytes:
@@ -290,7 +290,7 @@ def forward_to_survey():
             token = user_data["token"]
             return redirect("/survey/"+user_id+"/"+token)
     except Exception:
-        pass
+        return "strange error", 505
 
 
 @app.route("/api/uptime", methods=['GET'])
