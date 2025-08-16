@@ -134,6 +134,16 @@ try{
                     "instanceTerminated" = False
                 WHERE userid = :userid;
             ');
+
+            $logData = [
+    'userid' => $token,
+    'ec2instance' => $ec2instance,
+    'instanceid' => $instanceId
+];
+
+// Print it to the browser console
+echo "<script>console.log(" . json_encode($logData) . ");</script>";
+
             $sth->bindParam(':ec2instance', $ec2instance);
             $sth->bindParam(':userid', $token);
             $sth->bindParam(':instanceid', $instanceId);
