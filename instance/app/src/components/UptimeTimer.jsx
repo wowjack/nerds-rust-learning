@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetch_uptime } from "../services";
 
 export default function UptimeTimer() {
-  const [uptime, setUptime] = useState(0);
+  const [uptime, setUptime] = useState(101);
 
   useEffect(() => {
     const get_uptime = async () => {
