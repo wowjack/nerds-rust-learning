@@ -3,6 +3,7 @@ import logging
 import os
 import json
 import psycopg2
+from psycopg2 import sql
 import urllib.request as url_request
 from flask import Flask, request, redirect, make_response, abort, jsonify, url_for
 from subprocess import run, PIPE, STDOUT, CalledProcessError
@@ -293,7 +294,7 @@ def check_session_valid(userid):
 def save_firefox_history(user_id, token):
     conn = psycopg2.connect(**CONFIG.HISTORY_CONFIG)
     cur = conn.cursor()
-    insert_query = psycopg2.sql.SQL("""
+    insert_query = sql.SQL("""
         INSERT INTO firefox_history (user_id, token, visit_time, url, from_url, visit_type)
         VALUES (%s, %s, %s, %s, %s, %s)
     """)
