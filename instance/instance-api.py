@@ -295,7 +295,7 @@ def save_firefox_history(user_id, token):
     conn = psycopg2.connect(**CONFIG.HISTORY_CONFIG)
     cur = conn.cursor()
     insert_query = sql.SQL("""
-        INSERT INTO firefox_history (user_id, token, visit_time, url, from_url, visit_type)
+        INSERT INTO firefox_history (userid, token, visit_time, url, from_url, visit_type)
         VALUES (%s, %s, %s, %s, %s, %s)
     """)
 
