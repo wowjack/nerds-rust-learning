@@ -25,8 +25,8 @@
 }
 
 #editorContainer {
-  flex-grow: 4;
-  flex-basis: 400px;
+  flex: 4 1 40%;
+  min-width: 0;
   display: flex;
   flex-flow: column;
 }

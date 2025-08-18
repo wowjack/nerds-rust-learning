@@ -40,7 +40,11 @@ export default function ReferenceView() {
 
 
     return (
-        <pre>
+        <pre
+            style={{
+                overflow: "auto"
+            }}
+        >
             <code style={{ fontSize: "120%" }} className="language-rust">
                 {RUST_CODE}
             </code>
