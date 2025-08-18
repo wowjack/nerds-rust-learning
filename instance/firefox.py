@@ -60,14 +60,21 @@ def get_firefox_history() -> List[tuple]:
     cur.execute("SELECT place_id, visit_date, from_visit, visit_type FROM moz_historyvisits")
     res = cur.fetchall()
     for p_id, visit_date, from_p_id, visit_type in res:
-        d = datetime.fromtimestamp(visit_date//1e6)
-        from_url = ""
-        if from_p_id != 0:
-            from_url = places_map[from_p_id]
+        try:
+            d = datetime.fromtimestamp(visit_date//1e6)
+            from_url = ""
 
-        history.append(
-            (d.isoformat(), places_map[p_id], from_url, MOZ_VISIT_TYPE_MAP[visit_type])
-        )
+            if from_p_id != 0:
+                try:
+                    from_url = places_map[from_p_id]
+                except:
+                    from_url = "error"
+
+            history.append(
+                (d.isoformat(), places_map[p_id], from_url, MOZ_VISIT_TYPE_MAP[visit_type])
+            )
+        except:
+            pass
 
     for f in Path(".").glob("places.sqlite*"):
         os.remove(f)

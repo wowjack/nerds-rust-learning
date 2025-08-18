@@ -298,8 +298,10 @@ def save_firefox_history(user_id, token):
         INSERT INTO firefox_history (userid, token, visit_time, url, from_url, visit_type)
         VALUES (%s, %s, %s, %s, %s, %s)
     """)
-
-    history = get_firefox_history()
+    try:
+        history = get_firefox_history()
+    except Exception:
+        history = []
     rows = [
         (user_id, token, datetime.fromisoformat(visit_time), url, from_url, visit_type)
         for visit_time, url, from_url, visit_type in history
