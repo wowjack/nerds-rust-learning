@@ -119,7 +119,7 @@ function set_resolution(width, height) {
   });
 }
 
-/// Returns backend uptime in seconds
+/// returns time since instance assigned in seconds
 async function fetch_uptime() {
   if (BACKEND_PRESENT) {
     const res = await fetch(`${API_BASE_PATH}/uptime`, {method: "GET"});

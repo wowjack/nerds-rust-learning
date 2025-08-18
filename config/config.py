@@ -12,3 +12,11 @@ DB_CONFIG = {
     "user": "read_only_user",
     "password": "%pwUser3%"
 }
+
+# For writing to firefox_history table
+HISTORY_CONFIG = {
+    "host": "db",
+    "dbname": "notebook",
+    "user": "insert_user",
+    "password": "%pwUser2%"
+}

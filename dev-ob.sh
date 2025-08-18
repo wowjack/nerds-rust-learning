@@ -135,6 +135,7 @@ build_config() {
   sed -i "s|%appMode%|$appMode|g" instance/config.py
   sed -i "s|%submitSecret%|$submitSecret|g" instance/config.py
   sed -i "s|%pwUser3%|$pwUser3|g" instance/config.py
+  sed -i "s|%pwUser2%|$pwUser2|g" instance/config.py
 }
 
 checkCompose() {

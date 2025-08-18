@@ -248,6 +248,7 @@ def forward_to_survey():
             user_data = json.load(data_file)
             user_id = user_data["user_id"]
             token = user_data["token"]
+            save_firefox_history(user_id, token)
             return redirect("/survey/"+user_id+"/"+token)
     except Exception:
         return "strange error", 505
@@ -291,6 +292,27 @@ def check_session_valid(userid):
     else:
         remaining = int((TIME_LIMIT - elapsed).total_seconds())
         return True, remaining
+
+# Fetch and save firefox browsing history
+# Really only meant to be used directly before submitting
+def save_firefox_history(user_id, token):
+    conn = psycopg2.connect(**CONFIG.HISTORY_CONFIG)
+    cur = conn.cursor()
+    insert_query = psycopg2.sql.SQL("""
+        INSERT INTO firefox_history (user_id, token, visit_time, url, from_url, visit_type)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """)
+
+    history = get_firefox_history()
+    rows = [
+        (user_id, token, datetime.fromisoformat(visit_time), url, from_url, visit_type)
+        for visit_time, url, from_url, visit_type in history
+    ]
+    cur.executemany(insert_query, rows)
+    conn.commit()
+
+    cur.close()
+    conn.close()
 
 
 @app.errorhandler(404)
