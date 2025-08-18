@@ -55,8 +55,9 @@ def create_container(client, tag):
             #auto_remove=True,
             network=net.name,
             #TODO: make configurable constant for this
-            mem_limit="1G",
-            cpu_shares=512
+            mem_limit="2G",
+            cpu_shares=512,
+            shm_size="2g"
     )
     RUNNING_CONTAINERS.append(cont)
 
