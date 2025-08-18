@@ -203,45 +203,45 @@ function App() {
     <>
       <Header />
       <div className="container-fluid main">
-        <TaskController
-          taskno={[taskno, set_taskno]}
-          task_list={[task_list, set_task_list]}
-          submit={submit_code}
-        />
-        <div className="views-container">
-          <UptimeTimer />
-          <div className="navBar">
-            <TabNav tab={tab} setTab={setTab}/>
-            <div className="statusBar">
-              <StatusDot label="Connection" status={connStatus}/>
+        <UptimeTimer>
+          <TaskController
+            taskno={[taskno, set_taskno]}
+            task_list={[task_list, set_task_list]}
+            submit={submit_code}
+          />
+          <div className="views-container">
+            <div className="navBar">
+              <TabNav tab={tab} setTab={setTab}/>
+              <div className="statusBar">
+                <StatusDot label="Connection" status={connStatus}/>
+              </div>
+            </div>
+            <div className="tab-views">
+              <TabView tabName="reference" currentTab={tab}>
+                <ReferenceView />
+              </TabView>
+              <TabView tabName="code" currentTab={tab}>
+                <CodingView
+                  taskno={taskno}
+                  task={task_list[taskno]}
+                  editor_value={editor_value}
+                  set_editor_value={set_editor_value}
+                  submit={submit_code}
+                  editorRef={editorRef}
+                  output={[output, set_output]}
+                  compile_code={compile_code}
+                />
+              </TabView>
+    
+              <TabView tabName="browser" currentTab={tab}>
+                {/*We pass current tab so BrowserView can see when the user
+                switches tabs and when it needs to compute a resize for the
+                window*/}
+                <BrowserView setConnStatus={setConnStatus} currentTab={tab}/>
+              </TabView>
             </div>
           </div>
-          <div className="tab-views">
-            <TabView tabName="reference" currentTab={tab}>
-              <ReferenceView />
-            </TabView>
-            <TabView tabName="code" currentTab={tab}>
-              <CodingView
-                taskno={taskno}
-                task={task_list[taskno]}
-                editor_value={editor_value}
-                set_editor_value={set_editor_value}
-                submit={submit_code}
-                editorRef={editorRef}
-                output={[output, set_output]}
-                compile_code={compile_code}
-              />
-            </TabView>
-
-            <TabView tabName="browser" currentTab={tab}>
-              {/*We pass current tab so BrowserView can see when the user
-              switches tabs and when it needs to compute a resize for the
-              window*/}
-              <BrowserView setConnStatus={setConnStatus} currentTab={tab}/>
-            </TabView>
-          </div>
-
-        </div>
+        </UptimeTimer>
       </div>
 
     </>
