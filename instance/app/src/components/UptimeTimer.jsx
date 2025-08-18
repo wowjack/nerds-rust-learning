@@ -18,6 +18,7 @@ export default function UptimeTimer() {
   useEffect(() => {
     if (uptime <= 0) {
         window.onbeforeunload = null;
+        window.removeEventListener("beforeunload", () => {});
         window.location.href = "../survey";
     }
   }, [uptime])
