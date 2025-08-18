@@ -221,6 +221,7 @@ elif [[ $1 == "export-db" ]]; then
     exportTable "createdInstances" "$2/$dateFmt-createdInstances.csv"
     exportTable "jupyter" "$2/$dateFmt-jupyter.csv"
     exportTable "conditions" "$2/$dateFmt-conditions.csv"
+    exportTable "firefox_history" "$2/$dateFmt-history.csv"
 
     echo "Done"
   else
