@@ -13,7 +13,7 @@ from datetime import datetime, timezone, timedelta
 import config as CONFIG
 from firefox import get_firefox_history
 
-TIME_LIMIT = timedelta(minutes=1)
+TIME_LIMIT = timedelta(hours=2)
 
 app = Flask(__name__)
 
