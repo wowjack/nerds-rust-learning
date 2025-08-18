@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS "firefox_history" (
     url TEXT NOT NULL,
     from_url TEXT,
     visit_type TEXT NOT NULL
-)
+);
 
 REVOKE ALL ON ALL TABLES IN SCHEMA public FROM PUBLIC;
 ALTER TABLE "createdInstances" OWNER TO created_instances_user;
