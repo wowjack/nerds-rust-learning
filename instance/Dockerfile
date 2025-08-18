@@ -9,7 +9,7 @@ RUN npm run build
 
 # Fortunately the official rust container is built from the debian one so I can just substitute the rust container in
 # FROM debian:stable-slim
-FROM rust:1.86-slim
+FROM rust:1.89-bookworm
 RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install -yqq \
     build-essential \
     python3 \
