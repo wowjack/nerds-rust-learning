@@ -1,7 +1,11 @@
 #!/bin/sh
 
 # Enable Firefox logging
-export MOZ_LOG="timestamp,nsHttp:5,DocShell:5"
-export MOZ_LOG_FILE="/tmp/firefox.log"
+#export MOZ_LOG="timestamp,nsHttp:5,DocShell:5"
+#export MOZ_LOG_FILE="/tmp/firefox.log"
+
+# Disable hardware acceleration since its not available
+export MOZ_DISABLE_GPU=1
+
 
 DISPLAY=:1.0 exec firefox about:blank
