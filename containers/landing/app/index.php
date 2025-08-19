@@ -63,8 +63,8 @@ if (isset($_COOKIE["token"]) && isset($_COOKIE["userId"])) {
     
     if ($results) {
         $instance = $results["instanceid"];
-        $terminated = $row['terminated'];
-        $finished = $row['finished'];
+        $terminated = $results['terminated'];
+        $finished = $results['finished'];
 
         if ($terminated or $finished) {
             // redirect to survey
@@ -93,8 +93,8 @@ if (isset($_COOKIE["token"]) && isset($_COOKIE["userId"])) {
     
     if ($results) {
         $instance = $results["instanceid"];
-        $terminated = $row['terminated'];
-        $finished = $row['finished'];
+        $terminated = $results['terminated'];
+        $finished = $results['finished'];
 
         if ($terminated or $finished) {
             // redirect to survey
