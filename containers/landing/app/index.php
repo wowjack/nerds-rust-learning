@@ -48,28 +48,63 @@ if (isset($_COOKIE["token"]) && isset($_COOKIE["userId"])) {
     $token = $_COOKIE["token"];
 
     // Check if user's instance is still in the database
-    $sth = $connect->prepare('SELECT instanceid as instanceid FROM "createdInstances" WHERE userid = :userid AND NOT "instanceTerminated" AND NOT finished;');
+    $sth = $connect->prepare('
+        SELECT 
+            instanceid AS instanceid,
+            "instanceTerminated" AS terminated,
+            finished AS finished
+        FROM "createdInstances"
+        WHERE userid = :userid
+        LIMIT 1;
+    ');
     $sth->bindParam(':userid', $userId);
     $sth->execute();
-    $results = $sth->fetch(PDO::FETCH_BOTH);
-    $instance = $results["instanceid"];
+    $results = $sth->fetch(PDO::FETCH_ASSOC);
+    
+    if ($results) {
+        $instance = $results["instanceid"];
+        $terminated = $row['terminated'];
+        $finished = $row['finished'];
 
-    if(strlen($instance) > 0) {
-        // Redirect to active study instance
-        header("Location: /proxy/$instance/?userId=$userId&token=$token");
-        die();
+        if ($terminated or $finished) {
+            // redirect to survey
+            header("Location: /survey/$userId/$token");
+            die();
+        } else {
+            // Redirect to active study instance
+            header("Location: /proxy/$instance/?userId=$userId&token=$token");
+            die();
+        }
     }
 } else if (checkPid($pid)) {
-    $sth = $connect->prepare('SELECT instanceid as instanceid FROM "createdInstances" WHERE userid = :userid AND NOT "instanceTerminated" AND NOT finished;');
+    // Check if user's instance is still in the database
+    $sth = $connect->prepare('
+        SELECT 
+            instanceid AS instanceid,
+            "instanceTerminated" AS terminated,
+            finished AS finished
+        FROM "createdInstances"
+        WHERE userid = :userid
+        LIMIT 1;
+    ');
     $sth->bindParam(':userid', $pid);
     $sth->execute();
-    $results = $sth->fetch(PDO::FETCH_BOTH);
-    $instance = $results["instanceid"];
+    $results = $sth->fetch(PDO::FETCH_ASSOC);
+    
+    if ($results) {
+        $instance = $results["instanceid"];
+        $terminated = $row['terminated'];
+        $finished = $row['finished'];
 
-    if(strlen($instance) > 0) {
-        // Redirect to active study instance
-        header("Location: /proxy/$instance/?userId=$pid&token=$instance");
-        die();
+        if ($terminated or $finished) {
+            // redirect to survey
+            header("Location: /survey/$pid/$instance");
+            die();
+        } else {
+            // Redirect to active study instance
+            header("Location: /proxy/$instance/?userId=$pid&token=$instance");
+            die();
+        }
     }
 }
 
