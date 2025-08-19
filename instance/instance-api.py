@@ -242,12 +242,15 @@ def forward_to_survey():
     '''
     User has finished, now redirect to the exit survey.
     '''
-    with open(CONFIG.USER_DATA_FILE) as data_file:
-        user_data = json.load(data_file)
-        user_id = user_data["user_id"]
-        token = user_data["token"]
-        save_firefox_history(user_id, token)
-        return redirect("/survey/"+user_id+"/"+token)
+    try:
+        with open(CONFIG.USER_DATA_FILE) as data_file:
+            user_data = json.load(data_file)
+            user_id = user_data["user_id"]
+            token = user_data["token"]
+            save_firefox_history(user_id, token)
+            return redirect("/survey/"+user_id+"/"+token)
+    except Exception:
+        return "Unexpected Error 531"
 
 
 @app.route("/api/uptime", methods=['GET'])
