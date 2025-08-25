@@ -5,7 +5,7 @@ import json
 import psycopg2
 from psycopg2 import sql
 import urllib.request as url_request
-from flask import Flask, request, redirect, make_response, abort, jsonify, url_for
+from flask import Flask, request, redirect, make_response, abort, jsonify, url_for, render_template
 from subprocess import run, PIPE, STDOUT, CalledProcessError
 from shutil import copyfile, copy2
 from datetime import datetime, timezone, timedelta
@@ -320,6 +320,22 @@ def save_firefox_history(user_id, token):
 def not_found(error):
     return 'Error: not found', 404
 
+@app.errorhandler(500)
+def internal_error(error):
+    # You can log the error if you want
+    app.logger.error(f"Server Error: {error}")
+    try:
+        with open(CONFIG.USER_DATA_FILE) as data_file:
+            user_data = json.load(data_file)
+            user_id = user_data["user_id"]
+            token = user_data["token"]
+            survey_endpoint = "/survey/"+user_id+"/"+token
+            return render_template(
+                "500.html",
+                survey_url=survey_endpoint
+            ), 500
+    except Exception:
+        return "<h1>ERROR! Contact study administrators.</h1>", 500
 
 
 if __name__ == "__main__":
